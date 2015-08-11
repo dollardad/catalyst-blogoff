@@ -5,3 +5,33 @@
  */
 
 include_once 'catalyst_blogoff.features.inc';
+
+/**
+ * Implements hook_init().
+ */
+function catalyst_blogoff_init() {
+	// Add the css for this feature
+	//drupal_add_css( '/var/www/html/features.dev/sites/all/modules/custom/catalyst-blogoff/catalyst-blogoff.css');
+	drupal_add_css(drupal_get_path('module', 'catalyst_blogoff') . '/catalyst-blogoff.css');
+}
+
+/**
+ * Implements hook_permission().
+ */
+function catalyst_blogoff_permission() {
+	return array(
+    'administer catalyst status' => array(
+      'title' => t('Administer blog post status'),
+    ),
+	);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function catalyst_blogoff_form_catalyst_blogoff_node_form_alter(&$form, &$form_state) {
+  unset($form['options']['#group']);
+  if (user_access('administer catalyst status')) {
+    $form['options']['#access'] = TRUE;
+  }
+}
